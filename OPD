@@ -1,0 +1,51 @@
+using System;
+using System.Net;
+using System.Net.NetworkInformation;
+
+class PortChecker
+{
+    static void Main(string[] args)
+    {
+        int[] ports = { 21, 22, 46, 80, 443 };
+
+        Console.WriteLine("IP adress or URL:");
+
+        string ip = Console.ReadLine();
+
+        Ping ping = new Ping();
+
+        PingReply p1 = ping.Send(ip, 1);
+
+        Console.WriteLine("Scanning IP Adress :" + p1.Address.ToString());
+
+        foreach (int i in ports)
+        {
+            Console.Write("Port " + i + " is ");
+
+            // Ping the port
+            Ping ping1 = new Ping();
+            try
+            {
+
+                PingReply reply = ping1.Send(ip, i);
+
+ 
+                if (reply.Status == IPStatus.Success)
+                {
+                    Console.WriteLine("open.");
+                }
+                else
+                {
+                    Console.WriteLine("closed.");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("closed.");
+            }
+
+
+        }
+        Console.ReadKey();
+    }
+}
